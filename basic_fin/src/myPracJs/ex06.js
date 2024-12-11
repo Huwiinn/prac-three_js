@@ -2,7 +2,7 @@ import * as THREE from "three";
 
 // ----- 주제: 브라우저 창 사이즈 변경에 대응하기
 
-export default function Animation() {
+export default function DevelopAnimation() {
   // ✅ canvas
   const canvas = document.querySelector("#three-canvas");
   const renderer = new THREE.WebGLRenderer({
@@ -51,22 +51,11 @@ export default function Animation() {
   const clock = new THREE.Clock();
 
   function draw() {
-    // console.log("clock : ", clock.getElapsedTime()); // 절대시간, 초 단위
-    const time = clock.getElapsedTime();
+    // 💡 방법 2️⃣. getDelta 메서드 사용. 시간 간격이기 때문에 증가값이 아닌 일정한 값임
+    const delta = clock.getDelta();
 
-    /**
-     * 각도는 Radian을 사용함
-     * Radian은 각도를 표현하는 다른 방법임
-     * 360도는 2파이
-     * // mesh.rotation.y += 0.01;
-     * */
-    // mesh.rotation.y += THREE.MathUtils.degToRad(1); // three.js 내장 메서드. 우리가 알고있는 1도 부터 360도
-
-    // 💡 방법 1️⃣. 초 단위 시간을 이용하면 디바이스 기기에 따른 성능 이슈가 발생할 가능성이 적다. 시간은 같으므로 다양한 디바이스에서 실행하여도 같은 속도로 움직일 수 있게 통일되기 때문
-    mesh.rotation.y = 2 * time;
-
-    // mesh object 이동
-    mesh.position.y = time;
+    mesh.rotation.y += delta;
+    mesh.position.y += delta;
 
     if (mesh.position.y > 2) {
       mesh.position.y = 0;

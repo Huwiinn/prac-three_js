@@ -2,7 +2,7 @@ import * as THREE from "three";
 
 // ----- 주제: 브라우저 창 사이즈 변경에 대응하기
 
-export default function Animation() {
+export default function DevelopAnimation2() {
   // ✅ canvas
   const canvas = document.querySelector("#three-canvas");
   const renderer = new THREE.WebGLRenderer({
@@ -48,25 +48,17 @@ export default function Animation() {
   scene.add(mesh);
 
   // 그리기 && 성능 개선
-  const clock = new THREE.Clock();
+  let oldTime = Date.now(); // 과거 시간
 
   function draw() {
-    // console.log("clock : ", clock.getElapsedTime()); // 절대시간, 초 단위
-    const time = clock.getElapsedTime();
+    // 💡 방법 3️⃣. js 내장메서드 사용. Date 객체의 시간 간격을 이용한다. 해당 방법은 모니터 주사율에 따라 보이는 게 달라질 수 있음.
+    // 💓 해당 방법의 미친 장점: 일반 canvas animation에도 적용가능. three.js에 종속되지 않음
+    const newTime = Date.now(); // 현재 시간 (과거시간과 호출 시점 미세한 초 차이 존재)
+    const deltaTime = newTime - oldTime; // 해당 시간차를 이용
+    oldTime = newTime; // 과거 시간을 현재 시간으로 업데이트 (시간은 계속 흘러감. 일관된 애니메이션을 위해 값 업데이트)
 
-    /**
-     * 각도는 Radian을 사용함
-     * Radian은 각도를 표현하는 다른 방법임
-     * 360도는 2파이
-     * // mesh.rotation.y += 0.01;
-     * */
-    // mesh.rotation.y += THREE.MathUtils.degToRad(1); // three.js 내장 메서드. 우리가 알고있는 1도 부터 360도
-
-    // 💡 방법 1️⃣. 초 단위 시간을 이용하면 디바이스 기기에 따른 성능 이슈가 발생할 가능성이 적다. 시간은 같으므로 다양한 디바이스에서 실행하여도 같은 속도로 움직일 수 있게 통일되기 때문
-    mesh.rotation.y = 2 * time;
-
-    // mesh object 이동
-    mesh.position.y = time;
+    mesh.position.y += deltaTime * 0.0005;
+    mesh.rotation.y += deltaTime * 0.005;
 
     if (mesh.position.y > 2) {
       mesh.position.y = 0;
@@ -74,7 +66,6 @@ export default function Animation() {
 
     renderer.render(scene, camera);
 
-    // window.requestAnimationFrame(draw); // window api. 웹 브라우저 한정
     renderer.setAnimationLoop(draw);
     // ⬆️ Three.js에서 제공하는 애니메이션 메서드 | AI나 VR 컨텐츠를 만들 때(WebXR), window api가 아닌 해당 메서드를 꼭 사용해야함.
   }
