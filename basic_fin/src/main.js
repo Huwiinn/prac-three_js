@@ -5,7 +5,8 @@
 // import Animation from "./myPracJs/ex05";
 // import DevelopAnimation from "./myPracJs/ex06"; // delta 사용
 // import DevelopAnimation2 from "./myPracJs/ex06_2";
-import Fog from "./myPracJs/ex07";
+// import Fog from "./myPracJs/ex07";
+import UseAnimationWithLib from "./myPracJs/ex08";
 
 // example();
 // browserResize();
@@ -14,4 +15,5 @@ import Fog from "./myPracJs/ex07";
 // Animation();
 // DevelopAnimation();
 // DevelopAnimation2();
-Fog();
+// Fog();
+UseAnimationWithLib();
